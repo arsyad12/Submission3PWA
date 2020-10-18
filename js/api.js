@@ -3,9 +3,9 @@ var DataTeam;
 const token = '031cb13ff0274b41bf48afd7b3513c90'
 const tahun = 2001
 var base_url = "https://api.football-data.org/v2/";
-var standing_ep = `${base_url}competitions/${tahun}/standings?standingType=TOTAL`
-var matches_ep = `${base_url}competitions/${tahun}/matches`
-var teams_ep = `${base_url}competitions/${tahun}/teams`
+var standing_ep = `${base_url}competitions/${tahun}/standings?standingType=TOTAL`;
+var matches_ep = `${base_url}competitions/${tahun}/matches`;
+var teams_ep = `${base_url}competitions/${tahun}/teams`;
 
 var fetchApi = url => {
   return fetch(url, {
@@ -224,7 +224,7 @@ var SaveTeams = () => {
               <div class="center">${team.area.name}</div>
             </div>
             <div class="card-action right-align">
-                <a class="waves-effect waves-light btn-small green" onclick="insertTeamListener(${team.id})">DELETE TEAMS</a>
+                <a class="waves-effect waves-light btn-small green" onclick="deleteTeamListener(${team.id})">DELETE TEAMS</a>
             </div>
           </div>
         </div>
@@ -240,8 +240,6 @@ var SaveTeams = () => {
   }
 
   var deleteTeamListener = teamId => {
-    var c = confirm("Delete this team?")
-    if (c == true) {
       deleteTeam(teamId);
     }
-  }
+  

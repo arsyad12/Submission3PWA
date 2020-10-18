@@ -1,5 +1,6 @@
 {
     "name": "My First PWA",
+    "gcm_sender_id": "98146418769",
     "short_name": "My PWA",
     "description": "Aplikasi PWA pertama saya",
     "start_url": "/index.html",
@@ -14,3 +15,4 @@
         }
     ]
 }
+

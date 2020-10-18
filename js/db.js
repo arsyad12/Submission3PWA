@@ -71,7 +71,7 @@ var deleteTeam = (teamId) => {
     return tx.complete;
   }).then(() => {
     M.toast({ html: 'Team has been deleted!' });
-    loadFavTeams();
+    SaveTeams();
   }).catch(err => {
     console.error('Error: ', err);
   });

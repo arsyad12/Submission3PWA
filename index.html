@@ -29,6 +29,7 @@
     <script src="js/idb.js"></script>
     <script src="js/db.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/pushSW.js"></script>
 
     <script>
       // REGISTER SERVICE WORKER
@@ -51,6 +52,20 @@
         document.addEventListener("DOMContentLoaded", function() {
         var page = window.location.hash.substr(1);
       });
+     
+    
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
     </script>
   </body>
 </html>

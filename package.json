@@ -1,0 +1,22 @@
+{
+  "name": "submission2pwa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "push.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arsyad12/Submission2PWA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arsyad12/Submission2PWA/issues"
+  },
+  "homepage": "https://github.com/arsyad12/Submission2PWA#readme",
+  "dependencies": {
+    "web-push": "^3.4.4"
+  }
+}

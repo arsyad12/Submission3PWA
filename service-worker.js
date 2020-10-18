@@ -27,28 +27,30 @@ self.addEventListener("install", function (event) {
   );
 });
 
-/*fetch data to cache */
+
 self.addEventListener("fetch", function (event) {
-  var base_url = "https://api.football-data.org/v2/teams/";
-  if (event.request.url.indexOf(base_url) > -1) {
-      event.respondWith(
-          caches.open(CACHE_NAME).then(function (cache) {
-              return fetch(event.request).then(function (response) {
-                  cache.put(event.request.url, response.clone());
-                  return response;
-              })
-          })
-      );
-  } else {
-      event.respondWith(
-          caches.match(event.request, {
-              ignoreSearch: true
-          }).then(function (response) {
-              return response || fetch(event.request);
-          })
-      )
-  }
+    var base_url = "https://api.football-data.org/v2/teams/";
+    if (event.request.url.indexOf(base_url) > -1) {
+        event.respondWith(
+            caches.open(CACHE_NAME).then(function (cache) {
+                return fetch(event.request).then(function (response) {
+                    cache.put(event.request.url, response.clone());
+                    return response;
+                })
+            })
+        );
+    } else {
+        event.respondWith(
+            caches.match(event.request, {
+                ignoreSearch: true
+            }).then(function (response) {
+                return response || fetch(event.request);
+            })
+        )
+    }
 });
+
+
 
 /*event delete cache if CACHE_NAME != CACHE_NAME */
 self.addEventListener("activate", function (event) {
@@ -65,6 +67,7 @@ self.addEventListener("activate", function (event) {
       })
   );
 });
+
 
 //Push Notification
 self.addEventListener('push', function (event) {
@@ -88,4 +91,5 @@ self.addEventListener('push', function (event) {
   event.waitUntil(
       self.registration.showNotification('Push Notification', options)
   );
+
 });
