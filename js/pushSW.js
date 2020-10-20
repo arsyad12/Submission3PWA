@@ -1,3 +1,5 @@
+
+
 // Memeriksa API service worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js').then(function () {
@@ -14,6 +16,9 @@ if ('serviceWorker' in navigator) {
   console.log("ServiceWorker belum didukung browser ini.")
 }
 
+
+
+
 function requestPermission(){
   if('Notification' in window) {
     Notification.requestPermission().then(result => {
@@ -25,12 +30,25 @@ function requestPermission(){
         return;
       }
       console.log('Notification granted');
-      
+
+      function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/-/g, '+')
+            .replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
       if (('PushManager' in window)) {
         navigator.serviceWorker.getRegistration().then(function(registration) {
             registration.pushManager.subscribe({
                 userVisibleOnly: true,
-                applicationServerKey:"BIqxdGgovPhCpYU5WtGnPJOORy3Eu2QXuIt3JM2_YO9fkrVIaLzypOtNI4r_JDdh-aULsOC39_2GrWsAJowCByM"
+                applicationServerKey: urlBase64ToUint8Array("BK3BdacfJRjZ4OxUewB8HRLjU-6umfrsIoUxA99hbz-OupHxT5D7y79rBwscorK0oDuXUhkLsgKnvi-iKg2dTr0")
+                
             }).then(function(subscribe) {
                 console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
                 console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(

@@ -13,7 +13,7 @@
     <!-- Navigasi -->
     <nav class="teal lighten-1" role="navigation">
       <div class="nav-wrapper container">
-        <a href="#" class="brand-logo" id="logo-container">News Reader</a>
+        <a href="#" class="brand-logo" id="logo-container">FootBall News</a>
         <a href="#" class="sidenav-trigger" data-target="nav-mobile">&#9776;</a>
 
         <ul class="topnav right hide-on-med-and-down"></ul>
@@ -54,18 +54,7 @@
       });
      
     
-  function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-}
+ 
     </script>
   </body>
 </html>

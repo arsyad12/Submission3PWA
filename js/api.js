@@ -38,27 +38,34 @@ function error(error) {
 
 
 var getStandings = () => {
+  if ('caches' in window) {
+    caches.match(standing_ep).then(function (response) {
+        if (response) {
+            response.json().then(function (data) {
+                Standings(data);
+            });
+        }
+    });
+}
   return fetchApi(standing_ep)
     .then(status)
-    .then(json);
+    .then(json)
+    .then(function(data){
+    Standings(data)
+    });
 }
 
-var Standings = () => {
-
-  var standings = getStandings()
-  standings.then(data => {
-
-    var str = JSON.stringify(data).replace(/http:/g, 'https:');
-    data = JSON.parse(str);
-
-    var html = ''
-    data.standings.forEach(standing => {
+const Standings = data => {
+    let str = JSON.stringify(data).replace(/^http:\/\//i, 'https://');
+    let dataStandings = JSON.parse(str);
+    dataStandings.forEach(standing => {
+      console.log(standing);
       var detail = ''
       standing.table.forEach(result => {
         detail += `
             <tr>
             <td>${result.position}</td>
-            <td><img class="responsive-img" width="24" height="24" src="${ result.team.crestUrl || 'img/empty_badge.svg'}"> </td>
+            <td><img class="responsive-img" width="24" height="24" src="${ result.team.crestUrl.replace(/^http:\/\//i, 'https://') || 'img/empty_badge.svg'}"> </td>
             <td>${result.team.name}</td>
             <td>${result.playedGames}</td>
             <td>${result.won}</td>
@@ -94,7 +101,6 @@ var Standings = () => {
       `
     });
     document.getElementById("articles").innerHTML = html;
-  })
 }
 
 

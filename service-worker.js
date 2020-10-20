@@ -16,7 +16,11 @@ var urlsToCache = [
   "/js/idb.js",
   "/js/db.js",
   "/js/script.js",
-  "/icon.png"
+  "/icon.png",
+  "/js/pushSW.js",
+  "/push.js",
+  "/package.json",
+  "/package-lock.json"
 ];
 
 self.addEventListener("install", function (event) {
@@ -51,6 +55,44 @@ self.addEventListener("fetch", function (event) {
 });
 
 
+
+/*
+self.addEventListener("fetch", function (event) {
+    var base_url = "https://api.football-data.org/v2/teams/";
+    if (event.request.url.indexOf(base_url) > -1) {
+        event.respondWith(
+            caches.open(CACHE_NAME).then(function (cache) {
+                return fetch(event.request).then(function (response) {
+                    cache.put(event.request.url, response.clone());
+                    return response;
+                })
+            })
+        );
+    } else {
+        event.respondWith(
+            caches.match(event.request, {cacheName:CACHE_NAME, ignoreSearch: true})
+            .then(function (response) {
+                if(response){
+                return response; 
+                }
+                var fetchRequest = event.request.clone();
+                return fetch(fetchRequest).then(
+                    function(response){
+                        if(!response || response.status !==200){
+                            return response;
+                        }
+                        var responseToCache = response.clone();
+                        caches.open(CACHE_NAME)
+                        .then(function(cache){
+                            cache.put(event.request, responseToCache);
+                        });
+                        return response;
+                    });
+            })
+        )
+    };
+});
+*/
 
 /*event delete cache if CACHE_NAME != CACHE_NAME */
 self.addEventListener("activate", function (event) {
