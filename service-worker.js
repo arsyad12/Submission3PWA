@@ -1,4 +1,4 @@
-const CACHE_NAME = "Football-v1";
+const CACHE_NAME = "Football-v2";
 var urlsToCache = [
   "/",
   "/nav.html",
@@ -32,8 +32,33 @@ self.addEventListener("install", function (event) {
 });
 
 
+
+/*self.addEventListener("fetch", function (event) {
+if (event.request.url.includes("https://api.football-data.org/v2/")){ 
+event.respondWith(async function () {
+const cache = await caches.open(CACHE_NAME); 
+const cachedResponse = await cache.match(event.request); 
+if (cachedResponse) return cachedResponse; 
+const networkResponse = await fetch(event.request); 
+event.waitUntil( 
+    cache.put(event.request, networkResponse.clone()) 
+); 
+return networkResponse; }()); 
+} else { 
+    event.respondWith( 
+        caches.match(event.request)
+    .then(function (response) { 
+        return response || fetch(event.request); 
+    }) 
+ ) 
+}
+});
+
+*/
+
+
 self.addEventListener("fetch", function (event) {
-    var base_url = "https://api.football-data.org/v2/teams/";
+    var base_url = "https://api.football-data.org/v2/";
     if (event.request.url.indexOf(base_url) > -1) {
         event.respondWith(
             caches.open(CACHE_NAME).then(function (cache) {
@@ -53,8 +78,6 @@ self.addEventListener("fetch", function (event) {
         )
     }
 });
-
-
 
 /*
 self.addEventListener("fetch", function (event) {

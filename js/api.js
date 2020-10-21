@@ -26,7 +26,6 @@ function status(response) {
   }
 }
 
-
 function json(response) {
   return response.json();
 }
@@ -50,16 +49,15 @@ var getStandings = () => {
   return fetchApi(standing_ep)
     .then(status)
     .then(json)
-    .then(function(data){
-    Standings(data)
-    });
 }
 
-const Standings = data => {
-    let str = JSON.stringify(data).replace(/^http:\/\//i, 'https://');
-    let dataStandings = JSON.parse(str);
-    dataStandings.forEach(standing => {
-      console.log(standing);
+const Standings =()=> {
+  var standings = getStandings()
+  standings.then(data => {
+    var str = JSON.stringify(data).replace(/http:/g, 'https:');
+    data = JSON.parse(str);
+    var html = ''
+    data.standings.forEach(standing => {
       var detail = ''
       standing.table.forEach(result => {
         detail += `
@@ -101,12 +99,23 @@ const Standings = data => {
       `
     });
     document.getElementById("articles").innerHTML = html;
+})
+
 }
 
 
 
-
 var getMatches = () => {
+
+  if ('caches' in window) {
+    caches.match(matches_ep).then(function (response) {
+        if (response) {
+            response.json().then(function (data) {
+                Matches(data);
+            });
+        }
+    });
+}
   return fetchApi(matches_ep)
     .then(status)
     .then(json);
@@ -143,6 +152,15 @@ var Matches = () => {
 
 
 var getTeams = () => {
+  if ('caches' in window) {
+    caches.match(teams_ep).then(function (response) {
+        if (response) {
+            response.json().then(function (data) {
+                Teams(data);
+            });
+        }
+    });
+}
   return fetchApi(teams_ep)
     .then(status)
     .then(json);
