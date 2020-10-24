@@ -44,8 +44,11 @@ function requestPermission(){
         return outputArray;
     }
       if (('PushManager' in window)) {
-        navigator.serviceWorker.getRegistration().then(function(registration) {
-            registration.pushManager.subscribe({
+
+        navigator.serviceWorker.ready.then(() => {    
+          if (('PushManager' in window)) {        
+              navigator.serviceWorker.getRegistration().then((registration) => {            
+                  registration.pushManager.subscribe({                
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array("BK3BdacfJRjZ4OxUewB8HRLjU-6umfrsIoUxA99hbz-OupHxT5D7y79rBwscorK0oDuXUhkLsgKnvi-iKg2dTr0")
                 
@@ -62,7 +65,8 @@ function requestPermission(){
     }
 })
 }
+    })
+  }
 }
-
   
  

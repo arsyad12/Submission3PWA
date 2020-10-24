@@ -48,11 +48,11 @@ function loadPage(page) {
       var content = document.querySelector("#body-content");
       
       if (page === "group") {
-        Standings();
+        getStandings();
       } else if (page === "match") {
-        Matches();
+        getMatches();
       } else if (page === "team") {
-        Teams();
+        getTeams();
       }
         else if (page === "savedMatch") {
         SaveMatch();

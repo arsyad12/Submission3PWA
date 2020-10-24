@@ -1,7 +1,7 @@
 var DataMatch;
 var DataTeam;
-const token = '031cb13ff0274b41bf48afd7b3513c90'
-const tahun = 2001
+const token = '031cb13ff0274b41bf48afd7b3513c90';
+const tahun = 2001;
 var base_url = "https://api.football-data.org/v2/";
 var standing_ep = `${base_url}competitions/${tahun}/standings?standingType=TOTAL`;
 var matches_ep = `${base_url}competitions/${tahun}/matches`;
@@ -26,6 +26,7 @@ function status(response) {
   }
 }
 
+
 function json(response) {
   return response.json();
 }
@@ -36,34 +37,31 @@ function error(error) {
 
 
 
-var getStandings = () => {
+const getStandings = () => {
   if ('caches' in window) {
-    caches.match(standing_ep).then(function (response) {
-        if (response) {
-            response.json().then(function (data) {
-                Standings(data);
-            });
+    caches.match(standing_ep).then(response => {
+        if(response){
+          response.json().then(data=>Standings(data))
         }
     });
-}
-  return fetchApi(standing_ep)
+  }
+  fetchApi(standing_ep)
     .then(status)
     .then(json)
+    .then(data=>Standings(data));
 }
-
-const Standings =()=> {
-  var standings = getStandings()
-  standings.then(data => {
-    var str = JSON.stringify(data).replace(/http:/g, 'https:');
+const Standings =(data)=> {
+  
+    const str = JSON.stringify(data).replace(/http:/g, 'https:');
     data = JSON.parse(str);
-    var html = ''
+    let html = ''
     data.standings.forEach(standing => {
-      var detail = ''
+      let detail = ''
       standing.table.forEach(result => {
         detail += `
             <tr>
             <td>${result.position}</td>
-            <td><img class="responsive-img" width="24" height="24" src="${ result.team.crestUrl.replace(/^http:\/\//i, 'https://') || 'img/empty_badge.svg'}"> </td>
+            <td><img class="responsive-img" width="24" alt="${result.team.name}" height="24" src="${result.team.crestUrl.replace(/^http:\/\//i, 'https://') || 'img/empty_badge.svg'}"> </td>
             <td>${result.team.name}</td>
             <td>${result.playedGames}</td>
             <td>${result.won}</td>
@@ -73,12 +71,11 @@ const Standings =()=> {
           </tr>
           `;
       })
-
       html += `
         <div class="card">
         <div class="card-content">
         <h5 class="header">${standing.group}</h5>
-        <table>
+        <table class="highlight responsive-table centered">
         <thead>
           <tr>
             <th>Position</th>
@@ -91,7 +88,7 @@ const Standings =()=> {
             <th>Points</th>
           </tr>
         </thead>
-        <tbody>` + detail + `</tbody>
+        <tbody>${detail}</tbody>
         </table>
         </div>
         </div>
@@ -99,11 +96,7 @@ const Standings =()=> {
       `
     });
     document.getElementById("articles").innerHTML = html;
-})
-
 }
-
-
 
 var getMatches = () => {
 
@@ -118,21 +111,25 @@ var getMatches = () => {
 }
   return fetchApi(matches_ep)
     .then(status)
-    .then(json);
+    .then(json)
+    .then(function(data){
+      Matches(data)
+    });
 }
-var Matches = () => {
 
-  var matches = getMatches()
-  matches.then(data => {
-    DataMatch = data;
-    var str = JSON.stringify(data).replace(/http:/g, 'https:');
-    data = JSON.parse(str);
-
-    var html = ''
-    data.matches.forEach(match => {
+var Matches = (data) => {
+  console.log(data);
+  const matches = data.matches;
+  let str = JSON.stringify(matches).replace(/^http:\/\//i, 'https://');
+  let dataMatches = JSON.parse(str);
+  var html = "";
+  DataMatch = data;
+  dataMatches.forEach(match => {
+  console. log(match) ;
     
       html += `
-            <div class="card">
+          <div class="col s12 m6 l6">
+          <div class="card">
               <div class="card-content card-match">
                 <div class="col s10">${match.homeTeam.name}</div>
                 <div class="col s2">${match.score.fullTime.homeTeam}</div>
@@ -147,8 +144,8 @@ var Matches = () => {
             `
     });
     document.getElementById("articles2").innerHTML = html;
-  })
-}
+  }
+
 
 
 var getTeams = () => {
@@ -163,21 +160,22 @@ var getTeams = () => {
 }
   return fetchApi(teams_ep)
     .then(status)
-    .then(json);
+    .then(json)
+    .then(function(data){
+      Teams(data)
+    });
 }
   
-var Teams = () => {
-  
-  var teams = getTeams()
-
-  teams.then(data => {
-    DataTeam = data;
-    var str = JSON.stringify(data).replace(/http:/g, 'https:');
-    data = JSON.parse(str);
-   
-    var html = ''
-    
-    data.teams.forEach(team => {
+var Teams = (data) => {
+  console.log(data);
+  const teams = data.teams;
+  let str = JSON.stringify(teams).replace(/^http:\/\//i, 'https://');
+  let dataTeams = JSON.parse(str);
+  dataTeams.forEach(teamss => {
+  console. log(teamss) ;
+  var html = ''
+  DataTeam = data;
+  data.teams.forEach(team => {
       
       html += `
         <div class="card">
@@ -187,7 +185,7 @@ var Teams = () => {
             <div class="center">${team.area.name}</div>
           </div>
           <div class="card-action right-align">
-              <a class="waves-effect waves-light btn-small green" onclick="insertTeamListener(${team.id})">SAVE TEAMS</a>
+              <a class="waves-effect waves-light btn-small" onclick="insertTeamListener(${team.id})">SAVE TEAMS</a>
           </div>
         </div>
       </div>
